@@ -1,6 +1,3 @@
-##Writeup Template
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Advanced Lane Finding Project**
@@ -30,9 +27,9 @@ The goals / steps of this project are the following:
 ###Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
 ---
-###Camera Calibration
+### Camera Calibration
 
-####1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
+#### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 
 The code for this step is contained in the IPython notebook located in "Extract distortion matrix.ipynb".  
 
@@ -42,21 +39,21 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 ![alt text][image1]
 
-###Pipeline (single images)
+### Pipeline (single images)
 
 All codes below exists in "Project notebook.ipynb".
 
-####1. Provide an example of a distortion-corrected image.
+#### 1. Provide an example of a distortion-corrected image.
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
 ![alt text][image2]
 
-####2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
 I used a combination of color and gradient thresholds to generate a binary image ( the codes are in 5th cell). Especially L and S value of HLS color space and x direction gradiant using sobel operator (kernel_size = 3) were used. Here's an example of my output for this step.
 
 ![alt text][image3]
 
-####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
+#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
 The code for my perspective transform includes a function called `warp()`, which appears in the 2nd code cell.  The `warp()` function takes as inputs an image (`img`).  I chose to hardcode the source and destination points in the following manner:
 
@@ -71,17 +68,17 @@ These points were chosen by reffering to "test_images/straight_lines1" assuming 
 
 ![alt text][image4]
 
-####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
+#### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
 Then I used sliding window technique to detect the lane line from the warped binary image, but this method was skipped if the lane lines were detexted in previous frame. The corresponding pixels in lane lines were used to generate 2nd order polynomials that approximate the lane line. Also the result of averages throught last 5 frames. The result image is as follows:
 
 ![alt text][image5]
 
-####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
+#### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
 I did this in 9th and 13th code cells. As for curvature, the pixel cordinates in lane line were corrected to actual size and re-fitted to 2nd order polynominal and its coefficient was used to calcluate the radius of curcature. As for horizontal position in a lane, the difference between horizontal center of image and mean position of left lane and right lane at the bottom of image was calculated.
 
-####6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
 I implemented this step in 11-12th code cells.  Here is an example of my result on a test image:
 
@@ -89,16 +86,16 @@ I implemented this step in 11-12th code cells.  Here is an example of my result 
 
 ---
 
-###Pipeline (video)
+### Pipeline (video)
 
-####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
+#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
 Here's a [link to my video result](./project_result.mp4)
 
 ---
 
-###Discussion
+### Discussion
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
 In order to overcome the shadow which appears in the project video, I've used Lightness value in HLS color space for threshold and generate binary image. So this code might fail in darker situation (eg. Night driving). In this project, the fact that the color of lane lines must be either white or yellow was not utlized in the code. So using the color information might help improve this project code.
