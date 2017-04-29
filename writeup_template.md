@@ -51,7 +51,8 @@ To demonstrate this step, I will describe how I apply the distortion correction 
 ![alt text][image2]
 
 ####2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
-I used a combination of color and gradient thresholds to generate a binary image ( the codes are in 5th cell).  Here's an example of my output for this step.
+
+I used a combination of color and gradient thresholds to generate a binary image ( the codes are in 5th cell). Especially L and S value of HLS color space and x direction gradiant using sobel operator (kernel_size = 3) were used. Here's an example of my output for this step.
 
 ![alt text][image3]
 
@@ -72,13 +73,13 @@ These points were chosen by reffering to "test_images/straight_lines1" assuming 
 
 ####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+Then I used sliding window technique to detect the lane line from the warped binary image, but this method was skipped if the lane lines were detexted in previous frame. The corresponding pixels in lane lines were used to generate 2nd order polynomials that approximate the lane line. Also the result of averages throught last 5 frames. The result image is as follows:
 
 ![alt text][image5]
 
 ####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in 11th and 13th code cells.
+I did this in 9th and 13th code cells. As for curvature, the pixel cordinates in lane line were corrected to actual size and re-fitted to 2nd order polynominal and its coefficient was used to calcluate the radius of curcature. As for horizontal position in a lane, the difference between horizontal center of image and mean position of left lane and right lane at the bottom of image was calculated.
 
 ####6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
@@ -100,5 +101,4 @@ Here's a [link to my video result](./project_result.mp4)
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
-
+In order to overcome the shadow which appears in the project video, I've used Lightness value in HLS color space for threshold and generate binary image. So this code might fail in darker situation (eg. Night driving). In this project, the fact that the color of lane lines must be either white or yellow was not utlized in the code. So using the color information might help improve this project code.
